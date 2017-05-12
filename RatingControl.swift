@@ -63,9 +63,13 @@ import UIKit
         let highlightedStar = UIImage(named:"highlightedStar", in: bundle, compatibleWith: self.traitCollection)
         
         // Create five buttons
-        for _ in 0..<starCount  {
+        for index in 0..<starCount  {
             // Create the button
             let button = UIButton()
+            
+            // set accessibility to button
+            button.accessibilityLabel = "Set \(index+1) star rating"
+            
             button.setImage(emptyStar, for: .normal)
             button.setImage(filledStar, for: .selected)
             button.setImage(highlightedStar, for: .highlighted)
@@ -110,6 +114,27 @@ import UIKit
         for(index, button) in ratingButtons.enumerated() {
             // if the index of the button is less than the rating then it should be selected
             button.isSelected = index < rating
+            
+            // hint string for the current star (accessibility)
+            let hintString: String?
+            if rating == index+1 {
+                hintString = "Tap again to reset rating to zero"
+            } else {
+                hintString = nil
+            }
+            
+            let valueString: String
+            switch(rating) {
+            case 0:
+                valueString = "No rating set"
+            case 1:
+                valueString = "1 star set"
+            default:
+                valueString = "\(rating) stars set"
+            }
+            
+            button.accessibilityHint = hintString
+            button.accessibilityValue = valueString
         }
     }
 }
